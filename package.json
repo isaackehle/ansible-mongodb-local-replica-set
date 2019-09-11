@@ -1,5 +1,5 @@
 {
-  "name": "ansible-mongodb-local-replica-set",
+  "name": "ansible-mongodb_local_replica_set",
   "version": "1.0.2",
   "description": "Manage a Local MongoDB installation as a Replica Set",
   "scripts": {

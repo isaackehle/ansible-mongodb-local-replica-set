@@ -1,6 +1,6 @@
 galaxy_info:
   author: Paul Kehle <twitter.com/pgkehle>
-  role_name: mongodb-local-replica-set
+  role_name: mongodb_local_replica_set
   description: Manage a Local MongoDB installation as a Replica Set
   company: pgkehle
   license: MIT
