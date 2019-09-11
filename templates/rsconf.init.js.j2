@@ -1,0 +1,11 @@
+let rs_conf = {
+  _id: "rs0",
+  members: [
+{% for item in rs_servers %}
+   { _id: {{item._id}}, host: 'localhost:{{item.port}}' },
+{% endfor %}
+  ]
+};
+
+rs.initiate(rs_conf);
+
