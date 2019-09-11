@@ -1,6 +1,7 @@
 galaxy_info:
   author: Paul Kehle <twitter.com/pgkehle>
-  description: Update hosts file with a list of hosts
+  role_name: mongodb-local-replica-set
+  description: Manage a Local MongoDB installation as a Replica Set
   company: pgkehle
   license: MIT
   min_ansible_version: 2.8.x
