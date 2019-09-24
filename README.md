@@ -22,7 +22,7 @@ config_dir: "/usr/local/etc"
 
 ```yaml
  - hosts: all
-   gather_facts: "{{ inventory_hostname != 'localhost' }}"
+   gather_facts: inventory_hostname != 'localhost'
    roles:
      - pgkehle.mongodb_local_replica_set
 ```
