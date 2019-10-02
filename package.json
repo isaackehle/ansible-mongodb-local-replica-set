@@ -1,6 +1,6 @@
 {
   "name": "ansible-mongodb_local_replica_set",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Manage a Local MongoDB installation as a Replica Set",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
