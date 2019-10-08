@@ -9,7 +9,7 @@ This project manages a local replica set instance of MongoDB. The default MongoD
 ## Variables
 
 ```yaml
-data_path: /data/mongodb
+data_path: /opt/mongodb
 rs_servers:
   - { _id: 0, name: rs0_0, port: "27019" }
 local_user: "{{ lookup('env','USER') }}"

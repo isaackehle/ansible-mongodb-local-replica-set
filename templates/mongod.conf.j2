@@ -1,5 +1,5 @@
 storage:
-  dbPath: /data/mongodb/{{ item.name }}
+  dbPath: /opt/mongodb/{{ item.name }}
 
 # where to write logging data.
 systemLog:
@@ -14,4 +14,4 @@ net:
 
 replication:
    oplogSizeMB: 128
-   replSetName: rs0
+   replSetName: {{ replSetName }}

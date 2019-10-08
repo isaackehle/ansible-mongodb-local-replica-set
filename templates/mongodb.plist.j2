@@ -6,7 +6,7 @@
   <string>ansible.mongodb.{{ item.name }}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/opt/mongodb/bin/mongod</string>
+    <string>{{ mongodb_exec }}</string>
     <string>--config</string>
     <string>{{ config_dir }}/mongod-{{ item.name }}.conf</string>
   </array>

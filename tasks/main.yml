@@ -12,12 +12,20 @@
   when: true
   tags: ["always"]
 
+# - name: Kill any previous MongoDB Instances
+#   command: 'mongo --port {{ item.port }} --eval ''db.adminCommand("shutdown")'''
+#   with_items: "{{ rs_servers }}"
+#   delegate_to: localhost
+#   ignore_errors: true
+#   when: true
+#   tags: ["always"]
+
 - name: Kill any previous MongoDB Instances
-  command: 'mongo --port {{ item.port }} --eval ''db.adminCommand("shutdown")'''
+  command: 'killall mongodb'
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
   ignore_errors: true
-  when: daemon_result.rc == 0
+  when: true
   tags: ["always"]
 
 - name: Remove data directory
@@ -26,7 +34,7 @@
     state: absent
   become: true
   delegate_to: localhost
-  when: daemon_result.rc == 0
+  when: true
   tags: ["rebuild"]
 
 - name: Create Root Data Directories
@@ -68,7 +76,7 @@
 
 - name: Create MongoDB Configurations
   template:
-    src: ./templates/mongod.conf.j2
+    src: templates/mongod.conf.j2
     dest: "{{ config_dir }}/mongod-{{ item.name }}.conf"
     owner: "{{ local_user }}"
     group: staff
@@ -76,14 +84,14 @@
   with_items: "{{ rs_servers }}"
   become: true
   delegate_to: localhost
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Start MongoDB Instances
-  command: "daemon -- mongod --replSet rs0 --port {{ item.port }} --bind_ip localhost --dbpath {{ data_path }}/{{ item.name }} --smallfiles --oplogSize 128"
+  command: "daemon -- mongod --replSet rs0 --port {{ item.port }} --bind_ip localhost --dbpath {{ data_path }}/{{ item.name }}"
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Get MongoDB Replica Set Status
@@ -91,15 +99,15 @@
   delegate_to: localhost
   ignore_errors: true
   register: rs_status_result
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild"]
 
 - name: Set Replica Set Init settings js
   template:
-    src: "./templates/rsconf.init.js.j2"
+    src: "templates/rsconf.init.js.j2"
     dest: "/tmp/rsconf.init.js"
   delegate_to: localhost
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild"]
 
 - name: Init MongoDB Replica Set
@@ -107,16 +115,16 @@
   delegate_to: localhost
   ignore_errors: true
   register: rs_init_result
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild"]
 #    when: '"NotYetInitialized" in rs_status_result.stdout'
 
 - name: Set Replica Set Init settings js
   template:
-    src: "./templates/rsconf.reconfig.js.j2"
+    src: "templates/rsconf.reconfig.js.j2"
     dest: "/tmp/rsconf.reconfig.js"
   delegate_to: localhost
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Reconfig MongoDB Replica Set
@@ -124,7 +132,7 @@
   delegate_to: localhost
   ignore_errors: true
   register: rs_reconfig_result
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 # - debug: var=rs_init_result
@@ -138,7 +146,7 @@
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
   ignore_errors: true
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Stop any previous MongoDB Services
@@ -146,19 +154,19 @@
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
   ignore_errors: true
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Stop daemons
   command: "killall daemon"
   delegate_to: localhost
   ignore_errors: true
-  when: daemon_result.rc == 0
+  when: true
   tags: ["init", "rebuild", "config"]
 
 - name: Create the services files
   template:
-    src: ./templates/mongodb.plist.j2
+    src: templates/mongodb.plist.j2
     dest: "{{ agents_dir }}/ansible.mongodb-{{ item.name }}.plist"
     owner: "{{ local_user }}"
     group: staff
@@ -172,19 +180,19 @@
   command: "launchctl unload {{ agents_dir }}/ansible.mongodb-{{ item.name }}.plist"
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
+  when: true
   tags: ["init", "rebuild"]
-  when: daemon_result.rc == 0
 
 - name: Load mongodb services on startup
   command: "launchctl load {{ agents_dir }}/ansible.mongodb-{{ item.name }}.plist"
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
+  when: true
   tags: ["init", "rebuild", "config", "start"]
-  when: daemon_result.rc == 0
 
 - name: Start mongodb services on startup
   command: "launchctl start {{ agents_dir }}/ansible.mongodb-{{ item.name }}.plist"
   with_items: "{{ rs_servers }}"
   delegate_to: localhost
+  when: true
   tags: ["init", "rebuild", "config", "start"]
-  when: daemon_result.rc == 0
