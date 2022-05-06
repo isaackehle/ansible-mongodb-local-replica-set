@@ -1,6 +1,6 @@
 {
   "name": "ansible-mongodb_local_replica_set",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Manage a Local MongoDB installation as a Replica Set",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pgkehle/ansible-mongodb-local-replica-set.git"
+    "url": "git+https://github.com/isaackehle/ansible-mongodb-local-replica-set.git"
   },
-  "author": "Paul Kehle (pgkehle@gmail.com)",
+  "author": "Isaac Kehle (isaac@kehle.org)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pgkehle/ansible-mongodb-local-replica-set/issues"
+    "url": "https://github.com/isaackehle/ansible-mongodb-local-replica-set/issues"
   },
-  "homepage": "https://github.com/pgkehle/ansible-mongodb-local-replica-set#readme",
+  "homepage": "https://github.com/isaackehle/ansible-mongodb-local-replica-set#readme",
   "main": "tasks/main.yml",
   "keywords": [
     "ansible",
